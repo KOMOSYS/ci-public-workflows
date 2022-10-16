@@ -1,4 +1,4 @@
-name: Bump version and create changelog with commitizen
+name: Wheel Build
 
 on:
   workflow_call:
