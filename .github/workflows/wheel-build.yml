@@ -6,7 +6,6 @@ on:
 jobs:
   wheel_build:
     if: ${{ always() }}
-    needs: bump_version
     runs-on: self-hosted
     # runs-on: ubuntu-latest
     steps:
