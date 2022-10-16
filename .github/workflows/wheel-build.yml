@@ -1,0 +1,36 @@
+name: Bump version and create changelog with commitizen
+
+on:
+  workflow_call:
+
+jobs:
+  wheel_build:
+    if: ${{ always() }}
+    needs: bump_version
+    runs-on: self-hosted
+    # runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+          token: ${{secrets.TEST_SECRET}}
+          ref: main
+
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.8.5'
+
+      - name: install build dependencies
+        run:
+          python -m pip install --upgrade pip
+          pip install wheel nuitka twine
+
+      - name: Build submodules
+        run:
+          python setup.py -q bdist_wheel  -d ${GITHUB_WORKSPACE}/wheels
+
+      - name: Upload Submodules
+        run:
+          twine upload --repository-url ${{secrets.TWINE_LATEST_REPO}} -u ${{secrets.TWINE_ID}} -p ${{secrets.TWINE_PW}} wheels/*
+
