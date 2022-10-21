@@ -1,0 +1,35 @@
+name: Wheel Build
+
+on:
+  workflow_call:
+
+jobs:
+  wheel_build:
+    if: ${{ always() }}
+    runs-on: self-hosted
+    # runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ref: main
+
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.8.13'
+
+      - name: install build dependencies
+        run:
+          python -m pip install --upgrade pip
+          pip install wheel twine
+
+      - name: Build submodules
+        run:
+          python setup.py -q bdist_wheel -d ${GITHUB_WORKSPACE}/wheels
+
+      - name: Upload Submodules
+        run:
+          twine upload --repository-url ${{secrets.TWINE_LATEST_REPO}} -u ${{secrets.TWINE_ID}} -p ${{secrets.TWINE_PW}} wheels/*
+
