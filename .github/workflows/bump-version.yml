@@ -21,7 +21,7 @@ jobs:
         with:
           git_name: commitizen-action[bot]
           changelog_increment_filename: body.md
-          github_token: ${{ secrets.GH_DX_DCI }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
       - name: Print Version
         run: echo "Bumped to version ${{ steps.cz.outputs.version }}"
       - name: Release
