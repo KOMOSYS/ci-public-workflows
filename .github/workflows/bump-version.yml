@@ -8,6 +8,8 @@ jobs:
     if: "!startsWith(github.event.head_commit.message, 'bump:')"
     runs-on: ubuntu-latest
 #    runs-on: self-hosted
+    outputs:
+      version: ${{ steps.cz.outputs.version }}
     name: "Bump version and create changelog with commitizen"
     steps:
       - name: Check out
