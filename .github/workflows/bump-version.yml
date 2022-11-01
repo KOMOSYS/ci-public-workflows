@@ -2,6 +2,10 @@ name: Bump version and create changelog with commitizen
 
 on:
   workflow_call:
+    outputs:
+      version:
+        description: Bumped version
+        value: ${{ jobs.bump_version.outputs.version }}
 
 jobs:
   bump_version:
